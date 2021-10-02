@@ -1,8 +1,11 @@
 package com.example.imelody;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -58,6 +61,21 @@ public class play_song extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this,uri);
         mediaPlayer.start();
         seekBar.setMax(mediaPlayer.getDuration());
+        Drawable mIcon= ContextCompat.getDrawable(this, R.drawable.pause);
+        Drawable mIcon1= ContextCompat.getDrawable(this, R.drawable.play);
+        Drawable mIcon2= ContextCompat.getDrawable(this, R.drawable.previous);
+        Drawable mIcon3= ContextCompat.getDrawable(this, R.drawable.next);
+
+
+        mIcon.setColorFilter(ContextCompat.getColor(this, R.color.purple_500), PorterDuff.Mode.MULTIPLY);
+        mIcon1.setColorFilter(ContextCompat.getColor(this, R.color.purple_500), PorterDuff.Mode.MULTIPLY);
+
+        mIcon2.setColorFilter(ContextCompat.getColor(this, R.color.purple_500), PorterDuff.Mode.MULTIPLY);
+        mIcon3.setColorFilter(ContextCompat.getColor(this, R.color.purple_500), PorterDuff.Mode.MULTIPLY);
+
+        play.setImageDrawable(mIcon);
+        prev.setImageDrawable(mIcon2);
+        next.setImageDrawable(mIcon3);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -98,11 +116,11 @@ public class play_song extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(mediaPlayer.isPlaying()){
-                    play.setImageResource(R.drawable.play);
+                    play.setImageDrawable(mIcon1);
                     mediaPlayer.pause();
                 }
                 else {
-                    play.setImageResource(R.drawable.pause);
+                    play.setImageDrawable(mIcon);
                     mediaPlayer.start();
                 }
 
@@ -114,6 +132,7 @@ public class play_song extends AppCompatActivity {
             public void onClick(View view) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
+                seekBar.setProgress(0);
 
                 if(position!=0){
                     position-=1;
@@ -127,7 +146,7 @@ public class play_song extends AppCompatActivity {
                 seekBar.setMax(mediaPlayer.getDuration());
                 textContent = songs.get(position).getName().toString();
                 textView.setText(textContent);
-                play.setImageResource(R.drawable.pause);
+                play.setImageDrawable(mIcon);
 
 
             }
@@ -138,6 +157,8 @@ public class play_song extends AppCompatActivity {
             public void onClick(View view) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
+                seekBar.setProgress(0);
+
 
                 if(position!=songs.size()-1){
                     position+=1;
@@ -151,10 +172,13 @@ public class play_song extends AppCompatActivity {
                 seekBar.setMax(mediaPlayer.getDuration());
                 textContent = songs.get(position).getName().toString();
                 textView.setText(textContent);
-                play.setImageResource(R.drawable.pause);
+                play.setImageDrawable(mIcon);
 
             }
         });
+
+
+
 
 
 
